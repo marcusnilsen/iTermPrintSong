@@ -17,22 +17,34 @@
 from Foundation import *
 from ScriptingBridge import *
 
-# Binding iTunes and VLC
-iTunes = SBApplication.applicationWithBundleIdentifier_("com.apple.iTunes")
-VLC = SBApplication.applicationWithBundleIdentifier_("org.videolan.vlc")
+# Process binding
+Processes = SBApplication.applicationWithBundleIdentifier_("com.apple.systemevents")
 
-# iTunes code:
-# INT representing state
-if (iTunes.playerState() == 1800426320):
-	if iTunes.currentStreamTitle():
-		# Print streaming name
-		print "/me is listning to '" + iTunes.currentStreamTitle() + " [Stream: " + iTunes.currentTrack().name() + "]" + "' (iTunes/iTerm2)"
-	else:
-		# Local file:
-		print "/me is listning to '" + iTunes.currentTrack().artist() + " - " + iTunes.currentTrack().name() + "' (iTunes/iTerm2)"
+# Set default song playing to none
+playing = 0
 
-# VLC code:
-elif VLC.playing(): 
-	print "/me is listning to '" + VLC.nameOfCurrentItem() + "' (VLC/iTerm2)"
-else: 
-	print "/echo Not playing enything (VLC/iTunes)"
+for item in Processes.processes():
+	# Listing processes to see if VLC/iTunes are running
+	# to prevent them from starting if they are not currently running
+	if item.bundleIdentifier() == 'org.videolan.vlc':
+		VLC = SBApplication.applicationWithBundleIdentifier_("org.videolan.vlc")
+		# VLC Code
+		if VLC.playing():
+			print "/me is listning to '" + VLC.nameOfCurrentItem() + "' (VLC/iTerm2)"
+			playing = 1
+	elif item.bundleIdentifier() == 'com.apple.iTunes':
+		# iTunes Code
+		iTunes = SBApplication.applicationWithBundleIdentifier_("com.apple.iTunes")
+		# INT representing state
+		if (iTunes.playerState() == 1800426320):
+			playing = 1
+			if iTunes.currentStreamTitle():
+				# Print streaming name
+				print "/me is listning to '" + iTunes.currentStreamTitle() + " [Stream: " + iTunes.currentTrack().name() + "]" + "' (iTunes/iTerm2)"
+			else:
+				# Local file:
+				print "/me is listning to '" + iTunes.currentTrack().artist() + " - " + iTunes.currentTrack().name() + "' (iTunes/iTerm2)"
+
+if not playing:
+	print "/echo Not playing anything (VLC/iTunes)"
+
