@@ -6,7 +6,7 @@
 #		Preferences -> Keys -> Under 'Global Shortcut Key', bind a key:
 #		Add (+), Shortcut: 		F5
 #			 Action: 		Run Coprocess
-#			 Add script path: 	python /path/to/the/script.py
+#			 Add script path: 	python /path/to/showSong.py
 #
 #	Pressing F5 in a Irssi window show print the songs playing in the channel
 #
