@@ -26,13 +26,13 @@ playing = 0
 for item in Processes.processes():
 	# Listing processes to see if VLC/iTunes are running
 	# to prevent them from starting if they are not currently running
-	if item.bundleIdentifier() == 'org.videolan.vlc':
+	if item.bundleIdentifier() == "org.videolan.vlc":
 		VLC = SBApplication.applicationWithBundleIdentifier_("org.videolan.vlc")
 		# VLC Code
 		if VLC.playing():
 			print "/me is listning to '" + VLC.nameOfCurrentItem() + "' (VLC/iTerm2)"
 			playing = 1
-	elif item.bundleIdentifier() == 'com.apple.iTunes':
+	elif item.bundleIdentifier() == "com.apple.iTunes":
 		# iTunes Code
 		iTunes = SBApplication.applicationWithBundleIdentifier_("com.apple.iTunes")
 		# INT representing state
